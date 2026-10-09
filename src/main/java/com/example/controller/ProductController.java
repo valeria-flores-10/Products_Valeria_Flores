@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.dto.ProductRequest;
 import com.example.dto.ProductResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +47,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponse> savde(@RequestBody Product product){
+    public ResponseEntity<ProductResponse> savde(@Valid  @RequestBody Product product){
         //TODO: process POST request
         Product newProduct = service.save(product);
 
@@ -54,7 +55,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponse> update(@PathVariable Long id, @RequestBody ProductRequest productUpdated){
+    public ResponseEntity<ProductResponse> update(@Valid @PathVariable Long id, @RequestBody ProductRequest productUpdated){
         //TODO: process PUT request
         Optional<Product> product= service.update(id, toEntity(productUpdated));
         if(product.isPresent()){
