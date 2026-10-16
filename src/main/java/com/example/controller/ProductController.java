@@ -47,11 +47,11 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponse> savde(@Valid  @RequestBody Product product){
+    public ResponseEntity<ProductResponse> save(@Valid  @RequestBody ProductRequest product){
         //TODO: process POST request
-        Product newProduct = service.save(product);
+        Product productSaved = service.save(toEntity(product), product.categoryId());
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(newProduct));
+        return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(productSaved));
     }
 
     @PutMapping("/{id}")
@@ -75,7 +75,7 @@ public class ProductController {
 
 
     private ProductResponse toResponse(Product product){
-        return new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getStock());
+        return new ProductResponse(product.getId(), product.getName(), product.getPrice(), product.getStock(), "", (long)0);
     }
 
     private Product toEntity(ProductRequest product){

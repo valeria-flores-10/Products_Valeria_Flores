@@ -3,6 +3,8 @@ package com.example.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.model.Category;
+import com.example.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
 import com.example.model.Product;
@@ -13,8 +15,12 @@ public class ProductService {
 
     private final ProductRepository repo;
 
-    public ProductService(ProductRepository repo){
+    private final CategoryRepository repoCategory;
+
+
+    public ProductService(ProductRepository repo, CategoryRepository repoCategory) {
         this.repo=repo;
+        this.repoCategory=repoCategory;
     }
 
     public List<Product> findAll(){
@@ -25,8 +31,10 @@ public class ProductService {
         return repo.findById(id);
     }
 
-    public Product  save(Product product){
-        return repo.save(product);
+    public Product  save(Product product, Long id){
+            Category category = repoCategory.findById(id).orElseThrow();
+            product.setCategory(category);
+            return repo.save(product);
     }
 
     public Optional<Product> update(long id, Product newProduct){
